@@ -2,6 +2,8 @@
 package start
 
 import (
+	"log"
+
 	h "github.com/gmlewis/go-frp/html"
 	"github.com/gopherjs/gopherjs/js"
 )
@@ -13,12 +15,18 @@ type Action func(Model) Model
 // TODO(gmlewis): figure out how to handle the Update in a general type-safe way.
 type Model interface {
 	// Update(action Action) App
-	View(address h.Address) h.HTML
+	View() h.HTML
 }
 
 // Start starts the web application.
 // TODO(gmlewis): Support event handling and signals.
 func Start(model Model) {
-	v := model.View("")
+	v := model.View()
 	js.Global.Get("document").Call("write", v.String())
+	js.Global.Set("OnClickHandler", OnClickHandler)
+}
+
+// OnClickHandler handles click events
+func OnClickHandler() {
+	log.Printf("OnClickHandler")
 }

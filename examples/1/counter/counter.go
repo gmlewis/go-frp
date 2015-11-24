@@ -22,7 +22,7 @@ func (m Model) Update(action Action) Model { return action(m) }
 
 // VIEW
 
-func (m Model) View(address h.Address) h.HTML {
+func (m Model) View() h.HTML {
 	style := [][]string{
 		{"font-size", "20px"},
 		{"font-family", "monospace"},
@@ -31,8 +31,8 @@ func (m Model) View(address h.Address) h.HTML {
 		{"text-align", "center"},
 	}
 	return h.Div(
-		h.Button(h.Text("-")).OnClick(address, Decrement),
+		h.Button(h.Text("-")).OnClick(m, Decrement),
 		h.Div(h.Text(m.String())).Style(style),
-		h.Button(h.Text("+")).OnClick(address, Increment),
+		h.Button(h.Text("+")).OnClick(m, Increment),
 	)
 }

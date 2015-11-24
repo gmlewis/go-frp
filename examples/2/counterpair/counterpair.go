@@ -41,10 +41,10 @@ func Bottom(action counter.Action, model Model) Model {
 
 // VIEW
 
-func (m Model) View(address h.Address) h.HTML {
+func (m Model) View() h.HTML {
 	return h.Div(
-		m.top.View(address /* Signal.ForwardTo address Top */),
-		m.bottom.View(address /* Signal.ForwardTo address Bottom */),
-		h.Button(h.Text("Reset")).OnClick(address, Reset),
+		m.top.View( /* address Signal.ForwardTo address Top */ ),
+		m.bottom.View( /* address Signal.ForwardTo address Bottom */ ),
+		h.Button(h.Text("Reset")).OnClick(m, Reset),
 	)
 }

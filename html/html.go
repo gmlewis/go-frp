@@ -98,29 +98,29 @@ func (s *HTML) ID() string {
 }
 
 // OnClick adds an onClick handler to an HTML element.
-func (s HTML) OnClick(model interface{}, action interface{}) HTML {
-	// log.Printf("GML: OnClick... model=%#v, action=%#v", model, action)
+func (s HTML) OnClick(model interface{}, update interface{}) HTML {
+	// log.Printf("GML: OnClick... model=%#v, update=%#v", model, update)
 	// s.address = address
-	// s.onClick = action
+	// s.onClick = update
 	// s.props = append(s.props, []string{"onclick", "OnClickHandler()"})
 	// use channels?
 	// use an anonymous function?
 	// js.Global.Get("myButton").Call("addEventListener", "click", func() { go func() {...}})
 	id := s.ID()
-	log.Printf("GML: creating element ID: s=%#v, model=%#v, id=%q", s, model, id)
+	log.Printf("GML: creating element ID: s=%#v, model=%#v, update=%#v, id=%q", s, model, update, id)
 	s.initFuncs = append(s.initFuncs, func() {
-		log.Printf("GML: firing initFunc! s=%#v, model=%#v, id=%q", s, model, id)
+		log.Printf("GML: firing initFunc! s=%#v, model=%#v, update=%#v, id=%q", s, model, update, id)
 		d := dom.GetWindow().Document()
 		el := d.GetElementByID(id)
 		el.AddEventListener("click", false, func(e dom.Event) {
 			go func() {
-				log.Printf("GML: in click handler! e=%#v, s=%#v, model=%#v, id=%q", e, s, model, id)
+				log.Printf("GML: in click handler! e=%#v, s=%#v, model=%#v, update=%#v, id=%q", e, s, model, update, id)
 				// The following causes these errors: "Uncaught Error: reflect: call of ?FIXME? on func Value"
 				// m := reflect.ValueOf(model)
 				// log.Printf("GML: model=%#v, m=%#v, m.Type=%q, m.NumField=%v", model, m, m.Type(), m.NumField())
-				// a := reflect.ValueOf(action)
-				// log.Printf("GML: action=%#v, a=%#v, a.Type=%q, a.NumField=%v", action, a, a.Type(), a.NumField())
-				// newModel := action(model)
+				// u := reflect.ValueOf(update)
+				// log.Printf("GML: update=%#v, u=%#v, u.Type=%q, u.NumField=%v", update, u, u.Type(), u.NumField())
+				// newModel := update(model)
 				// log.Printf("GML: in click handler! newModel=%#v", newModel)
 			}()
 		})

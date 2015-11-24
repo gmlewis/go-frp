@@ -18,7 +18,7 @@ func TestView(t *testing.T) {
 		"+</button>",
 		"Reset</button>",
 	}
-	got := v.String()
+	got, _ := v.Render()
 	for _, w := range want {
 		if !strings.Contains(got, w) {
 			t.Errorf("View = %q, want %q", got, w)

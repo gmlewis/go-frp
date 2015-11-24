@@ -2,8 +2,6 @@
 package start
 
 import (
-	"log"
-
 	h "github.com/gmlewis/go-frp/html"
 	"github.com/gopherjs/gopherjs/js"
 )
@@ -22,11 +20,9 @@ type Model interface {
 // TODO(gmlewis): Support event handling and signals.
 func Start(model Model) {
 	v := model.View()
-	js.Global.Get("document").Call("write", v.String())
-	js.Global.Set("OnClickHandler", OnClickHandler)
-}
-
-// OnClickHandler handles click events
-func OnClickHandler() {
-	log.Printf("OnClickHandler")
+	str, initFuncs := v.Render()
+	js.Global.Get("document").Call("write", str)
+	for _, initFunc := range initFuncs {
+		initFunc()
+	}
 }

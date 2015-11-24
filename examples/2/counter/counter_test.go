@@ -1,13 +1,24 @@
 package counter
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestView(t *testing.T) {
 	m := Model(0)
-	v := m.View("")
-	want := `<div><button>-</button><div style="font-size:20px;font-family:monospace;display:inline-block;width:50px;text-align:center;">0</div><button>+</button></div>`
-	if got := v.String(); got != want {
-		t.Errorf("View = %q, want %q", got, want)
+	v := m.View()
+	want := []string{
+		"<div>", "</div>",
+		`<div style="font-size:20px;font-family:monospace;display:inline-block;width:50px;text-align:center;">0</div>`,
+		"-</button>",
+		"+</button>",
+	}
+	got := v.String()
+	for _, w := range want {
+		if !strings.Contains(got, w) {
+			t.Errorf("View = %q, want %q", got, w)
+		}
 	}
 }
 

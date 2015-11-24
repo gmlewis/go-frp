@@ -11,16 +11,16 @@ import "fmt"
 // }
 
 // Address is a place-holder for future signal handling.
-type Address string
+// type Address string
 
 // HTML defines an HTML element.
 type HTML struct {
-	tag     string
-	props   [][]string
-	styles  [][]string
-	body    string
-	elems   []HTML
-	address Address
+	tag    string
+	props  [][]string
+	styles [][]string
+	body   string
+	elems  []HTML
+	// address Address
 	onClick interface{}
 }
 
@@ -39,7 +39,6 @@ func (s HTML) String() string {
 		if styles != "" {
 			result += fmt.Sprintf(" style=%q", styles)
 		}
-		// onClick
 		result += ">"
 	}
 	for _, v := range s.elems {
@@ -65,9 +64,14 @@ func (s HTML) Style(styles [][]string) HTML {
 }
 
 // OnClick adds an onClick handler to an HTML element.
-func (s HTML) OnClick(address Address, action interface{}) HTML {
-	s.address = address
+func (s HTML) OnClick(model interface{}, action interface{}) HTML {
+	// log.Printf("GML: OnClick... model=%#v, action=%#v", model, action)
+	// s.address = address
 	s.onClick = action
+	s.props = append(s.props, []string{"onclick", "OnClickHandler()"})
+	// use channels?
+	// use an anonymous function?
+	// js.Global.Get("myButton").Call("addEventListener", "click", func() { go func() {...}})
 	return s
 }
 
@@ -85,4 +89,14 @@ func Button(s HTML) HTML {
 // Quoting and XSS prevention will be added later.
 func Text(s string) HTML {
 	return HTML{body: s}
+}
+
+// Input creates an HTML <input>.
+func Input() HTML {
+	return HTML{tag: "input"}
+}
+
+// Label creates an HTML <label>
+func Label() HTML {
+	return HTML{tag: "label"}
 }

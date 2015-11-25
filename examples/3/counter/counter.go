@@ -1,3 +1,5 @@
+// Package counter is an example using go-frp modeled after the Elm example found at:
+// https://github.com/evancz/elm-architecture-tutorial/blob/master/examples/3/Counter.elm
 package counter
 
 import (

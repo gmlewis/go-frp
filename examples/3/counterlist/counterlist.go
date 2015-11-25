@@ -1,3 +1,5 @@
+// Package counterlist is an example using go-frp modeled after the Elm example found at:
+// https://github.com/evancz/elm-architecture-tutorial/blob/master/examples/3/CounterList.elm
 package counterlist
 
 import (

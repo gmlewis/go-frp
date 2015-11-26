@@ -7,7 +7,7 @@ import (
 
 func TestView(t *testing.T) {
 	m := Model(0)
-	v := m.View()
+	v := m.View(Updater(m), nil)
 	want := []string{
 		"<div>", "</div>",
 		`<div style="font-size:20px;font-family:monospace;display:inline-block;width:50px;text-align:center;">0</div>`,

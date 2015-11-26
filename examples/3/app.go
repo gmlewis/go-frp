@@ -7,5 +7,5 @@ import (
 
 func main() {
 	m := counterlist.Init(0, 0, 0)
-	start.Start(m)
+	start.Start(m, counterlist.Updater(m))
 }

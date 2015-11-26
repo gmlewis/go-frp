@@ -3,7 +3,12 @@
 // http://www.manning.com/books/functional-reactive-programming
 package label
 
-import h "github.com/gmlewis/go-frp/html"
+import (
+	"log"
+
+	h "github.com/gmlewis/go-frp/html"
+	"honnef.co/go/js/dom"
+)
 
 // MODEL
 
@@ -13,15 +18,23 @@ func (m Model) String() string { return string(m) }
 
 // UPDATE
 
-type Action func(Model) Model
+type Action func(Model, dom.Event) Model
 
-func (m Model) Update(action Action) Model { return action(m) }
+func Updater(model Model) func(Action, dom.Event) Model {
+	return func(action Action, event dom.Event) Model { return model.Update(action, event) }
+}
+func (m Model) Update(action Action, event dom.Event) Model { return action(m, event) }
+
+func Keypress(model Model, event dom.Event) Model {
+	log.Printf("Keypress: model=%v, event=%#v", model, event)
+	return model
+}
 
 // VIEW
 
-func (m Model) View() h.HTML {
+func (m Model) View(rootUpdateFunc, wrapFunc interface{}) h.HTML {
 	return h.Div(
-		h.Input(),
-		h.Label(),
+		h.Input(string(m)).OnKeypress(rootUpdateFunc, Updater(m), Keypress),
+		h.Label(string(m)),
 	)
 }

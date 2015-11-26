@@ -6,11 +6,11 @@ import (
 )
 
 func TestView(t *testing.T) {
-	m := Model(0)
-	v := m.View()
+	m := Model("")
+	v := m.View(Updater(m), nil)
 	want := []string{
 		"<div>", "</div>",
-		"<input></input>",
+		`<input value=""></input>`,
 		"Clear</button>",
 	}
 	got, _ := v.Render()

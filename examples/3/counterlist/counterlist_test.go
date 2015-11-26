@@ -7,7 +7,7 @@ import (
 
 func TestView(t *testing.T) {
 	m := Init(1, 2, 3)
-	v := m.View()
+	v := m.View(Updater(m), nil)
 	want := []string{
 		"<div>", "</div>",
 		`<div style="font-size:20px;font-family:monospace;display:inline-block;width:50px;text-align:center;">1</div>`,
@@ -15,7 +15,7 @@ func TestView(t *testing.T) {
 		`<div style="font-size:20px;font-family:monospace;display:inline-block;width:50px;text-align:center;">3</div>`,
 		"-</button>",
 		"+</button>",
-		"Reset</button>",
+		"Remove</button>",
 		"Add</button>",
 	}
 	got, _ := v.Render()

@@ -4,33 +4,41 @@ package html
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"strconv"
 
 	"honnef.co/go/js/dom"
 )
 
+// domNode is the ID of the root <div> to write the generated DOM.
+const domNode = "go-frp"
+
 var nextID int // Keep all HTML IDs unique.
 
-// type Action func(App) App
-//
-// type App interface {
-// 	Update(action Action) App
-// 	View(address Address) HTML
-// }
+// A Viewer implements a View that renders to HTML.
+type Viewer interface {
+	View(rootUpdateFunc, updateFunc interface{}) HTML
+}
 
-// Address is a place-holder for future signal handling.
-// type Address string
+// Render renders a view and writes it to the DOM.
+func Render(view Viewer, rootUpdateFunc interface{}) {
+	// log.Printf("GML: html.Render(view=%#v, rootUpdateFunc=%#v)", view, rootUpdateFunc)
+	v := view.View(rootUpdateFunc, nil)
+	str, initFuncs := v.Render()
+	dom.GetWindow().Document().GetElementByID(domNode).SetInnerHTML(str)
+	for _, initFunc := range initFuncs {
+		initFunc()
+	}
+}
 
 // HTML defines an HTML element.
 type HTML struct {
-	tag    string
-	id     string
-	props  [][]string
-	styles [][]string
-	body   string
-	elems  []HTML
-	// address Address
-	// onClick interface{}
+	tag       string
+	id        string
+	props     [][]string
+	styles    [][]string
+	body      string
+	elems     []HTML
 	initFuncs []func()
 }
 
@@ -97,35 +105,47 @@ func (s *HTML) ID() string {
 	return s.id
 }
 
-// OnClick adds an onClick handler to an HTML element.
-func (s HTML) OnClick(model interface{}, update interface{}) HTML {
-	// log.Printf("GML: OnClick... model=%#v, update=%#v", model, update)
-	// s.address = address
-	// s.onClick = update
-	// s.props = append(s.props, []string{"onclick", "OnClickHandler()"})
-	// use channels?
-	// use an anonymous function?
-	// js.Global.Get("myButton").Call("addEventListener", "click", func() { go func() {...}})
+// On adds an event handler to an HTML element.
+func (s HTML) On(event string, rootUpdateFunc, updateFunc, actionFunc interface{}) HTML {
 	id := s.ID()
-	log.Printf("GML: creating element ID: s=%#v, model=%#v, update=%#v, id=%q", s, model, update, id)
 	s.initFuncs = append(s.initFuncs, func() {
-		log.Printf("GML: firing initFunc! s=%#v, model=%#v, update=%#v, id=%q", s, model, update, id)
-		d := dom.GetWindow().Document()
-		el := d.GetElementByID(id)
-		el.AddEventListener("click", false, func(e dom.Event) {
+		el := dom.GetWindow().Document().GetElementByID(id)
+		if el == nil {
+			log.Printf("unable to find DOM element id=%q", id)
+			return
+		}
+		el.AddEventListener(event, false, func(de dom.Event) {
 			go func() {
-				log.Printf("GML: in click handler! e=%#v, s=%#v, model=%#v, update=%#v, id=%q", e, s, model, update, id)
-				// The following causes these errors: "Uncaught Error: reflect: call of ?FIXME? on func Value"
-				// m := reflect.ValueOf(model)
-				// log.Printf("GML: model=%#v, m=%#v, m.Type=%q, m.NumField=%v", model, m, m.Type(), m.NumField())
-				// u := reflect.ValueOf(update)
-				// log.Printf("GML: update=%#v, u=%#v, u.Type=%q, u.NumField=%v", update, u, u.Type(), u.NumField())
-				// newModel := update(model)
-				// log.Printf("GML: in click handler! newModel=%#v", newModel)
+				u := reflect.ValueOf(updateFunc)
+				// log.Printf("GML: updateFunc=%#v, u=%#v", updateFunc, u)
+				a := reflect.ValueOf(actionFunc)
+				// log.Printf("GML: actionFunc=%#v, a=%#v, a.Type=%q", actionFunc, a, a.Type())
+				args := []reflect.Value{a}
+				if reflect.TypeOf(updateFunc).NumIn() == 2 {
+					var e interface{} = de
+					args = append(args, reflect.ValueOf(e))
+				}
+				newModel := u.Call(args)
+				// log.Printf("GML: in click handler! len(newModel)=%v", len(newModel))
+				// log.Printf("GML: in click handler! newModel[0]=%v", newModel[0])
+				// log.Printf("GML: in click handler! newModel[0].Type=%v", newModel[0].Type())
+				if view, ok := newModel[0].Interface().(Viewer); ok {
+					Render(view, rootUpdateFunc)
+				}
 			}()
 		})
 	})
 	return s
+}
+
+// OnClick adds an click handler to an HTML element.
+func (s HTML) OnClick(rootUpdateFunc, updateFunc, actionFunc interface{}) HTML {
+	return s.On("click", rootUpdateFunc, updateFunc, actionFunc)
+}
+
+// OnKeypress adds a keypress handler to an HTML element.
+func (s HTML) OnKeypress(rootUpdateFunc, updateFunc, actionFunc interface{}) HTML {
+	return s.On("keypress", rootUpdateFunc, updateFunc, actionFunc)
 }
 
 // Div creates an HTML <div>.
@@ -145,11 +165,11 @@ func Text(s string) HTML {
 }
 
 // Input creates an HTML <input>.
-func Input() HTML {
-	return HTML{tag: "input"}
+func Input(s string) HTML {
+	return HTML{tag: "input", props: [][]string{{"value", s}}}
 }
 
 // Label creates an HTML <label>
-func Label() HTML {
-	return HTML{tag: "label"}
+func Label(s string) HTML {
+	return HTML{tag: "label", body: s}
 }

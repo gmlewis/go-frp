@@ -25,28 +25,37 @@ func Init(top, bottom int) Model {
 
 type Action func(Model) Model
 
+func Updater(model Model) func(action Action) Model {
+	return func(action Action) Model { return model.Update(action) }
+}
 func (m Model) Update(action Action) Model { return action(m) }
 
 func Reset(model Model) Model { return Init(0, 0) }
-func Top(action counter.Action, model Model) Model {
-	return Model{
-		top:    model.top.Update(action),
-		bottom: model.bottom,
+
+func top(model Model) counter.WrapFunc {
+	return func(cm counter.Model) interface{} {
+		return Model{
+			top:    cm,
+			bottom: model.bottom,
+		}
 	}
 }
-func Bottom(action counter.Action, model Model) Model {
-	return Model{
-		top:    model.top,
-		bottom: model.bottom.Update(action),
+
+func bottom(model Model) counter.WrapFunc {
+	return func(cm counter.Model) interface{} {
+		return Model{
+			top:    model.top,
+			bottom: cm,
+		}
 	}
 }
 
 // VIEW
 
-func (m Model) View() h.HTML {
+func (m Model) View(rootUpdateFunc, wrapFunc interface{}) h.HTML {
 	return h.Div(
-		m.top.View( /* address Signal.ForwardTo address Top */ ),
-		m.bottom.View( /* address Signal.ForwardTo address Bottom */ ),
-		h.Button(h.Text("Reset")).OnClick(m, Reset),
+		m.top.View(rootUpdateFunc, top(m)),
+		m.bottom.View(rootUpdateFunc, bottom(m)),
+		h.Button(h.Text("Reset")).OnClick(rootUpdateFunc, rootUpdateFunc, Reset),
 	)
 }

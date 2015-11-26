@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	start.Start(clearfield.Model("Hello world!"))
+	m := clearfield.Model("Hello world!")
+	start.Start(m, clearfield.Updater(m))
 }

@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	start.Start(counterpair.Init(0, 0))
+	m := counterpair.Init(0, 0)
+	start.Start(m, counterpair.Updater(m))
 }

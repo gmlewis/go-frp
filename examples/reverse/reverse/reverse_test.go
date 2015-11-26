@@ -1,12 +1,22 @@
 package reverse
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestView(t *testing.T) {
-	m := Model(0)
-	v := m.View()
-	want := `<div><input></input><label></label></div>`
-	if got, _ := v.Render(); got != want {
-		t.Errorf("View = %q, want %q", got, want)
+	m := Model("")
+	v := m.View(Updater(m), nil)
+	want := []string{
+		"<div>", "</div>",
+		`<input value=""></input>`,
+		"<label></label>",
+	}
+	got, _ := v.Render()
+	for _, w := range want {
+		if !strings.Contains(got, w) {
+			t.Errorf("View = %q, want %q", got, w)
+		}
 	}
 }

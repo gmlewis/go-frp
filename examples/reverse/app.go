@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	start.Start(reverse.Model("Hello world!"))
+	m := reverse.Model("Hello world!")
+	start.Start(m, reverse.Updater(m))
 }

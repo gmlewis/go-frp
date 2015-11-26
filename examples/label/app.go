@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	start.Start(label.Model("Hello world!"))
+	m := label.Model("Hello world!")
+	start.Start(m, label.Updater(m))
 }

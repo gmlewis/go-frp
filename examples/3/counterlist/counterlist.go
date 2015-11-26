@@ -31,22 +31,65 @@ func Init(values ...int) Model {
 
 // UPDATE
 
-func Remove() {}
-func Insert(model Model) Model {
+type Action func(Model) Model
+
+func Updater(model Model) func(action Action) Model {
+	return func(action Action) Model { return model.Update(action) }
+}
+func (m Model) Update(action Action) Model { return action(m) }
+
+func Remove(model Model) Model {
+	var counters []Counter
+	var nextID ID
+	if len(model.counters) > 1 {
+		counters = model.counters[:len(model.counters)-1]
+		nextID = model.nextID - 1
+	}
 	return Model{
-		counters: append(model.counters, Counter{id: model.nextID, counter: c.Model(0)}),
+		counters: counters,
+		nextID:   nextID,
+	}
+}
+
+func Insert(model Model) Model {
+	counters := model.counters[:] // Copy counters
+	return Model{
+		counters: append(counters, Counter{id: model.nextID, counter: c.Model(0)}),
 		nextID:   model.nextID + 1,
+	}
+}
+
+func cWrapper(model Model, id int) c.WrapFunc {
+	return func(cm c.Model) interface{} {
+		var counters []Counter
+		for i := 0; i < len(model.counters); i++ {
+			if i == id {
+				counters = append(counters, Counter{id: ID(id), counter: cm})
+				continue
+			}
+			counters = append(counters, model.counters[i])
+		}
+		return Model{
+			counters: counters,
+			nextID:   model.nextID,
+		}
+	}
+}
+
+func wrapper(model Model) func(action Action) interface{} {
+	return func(action Action) interface{} {
+		return model.Update(action)
 	}
 }
 
 // VIEW
 
-func (m Model) View() h.HTML {
-	remove := h.Button(h.Text("Reset")).OnClick(m, Remove)
-	insert := h.Button(h.Text("Add")).OnClick(m, Insert)
+func (m Model) View(rootUpdateFunc, wrapFunc interface{}) h.HTML {
+	remove := h.Button(h.Text("Remove")).OnClick(rootUpdateFunc, wrapper(m), Remove)
+	insert := h.Button(h.Text("Add")).OnClick(rootUpdateFunc, wrapper(m), Insert)
 	p := []h.HTML{remove, insert}
-	for _, counter := range m.counters {
-		p = append(p, counter.counter.View( /* address Signal.ForwardTo address counter */ ))
+	for id, counter := range m.counters {
+		p = append(p, counter.counter.View(rootUpdateFunc, cWrapper(m, id)))
 	}
 	return h.Div(p...)
 }

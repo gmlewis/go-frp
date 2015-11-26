@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	start.Start(counter.Model(0))
+	m := counter.Model(0)
+	start.Start(m, counter.Updater(m))
 }

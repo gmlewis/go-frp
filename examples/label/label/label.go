@@ -4,8 +4,6 @@
 package label
 
 import (
-	"log"
-
 	h "github.com/gmlewis/go-frp/html"
 	"honnef.co/go/js/dom"
 )
@@ -26,7 +24,10 @@ func Updater(model Model) func(Action, dom.Event) Model {
 func (m Model) Update(action Action, event dom.Event) Model { return action(m, event) }
 
 func Keypress(model Model, event dom.Event) Model {
-	log.Printf("Keypress: model=%v, event=%#v", model, event)
+	if t, ok := event.Target().(*dom.HTMLInputElement); ok {
+		// TODO: save/restore focus and cursor position
+		return Model(t.Value)
+	}
 	return model
 }
 

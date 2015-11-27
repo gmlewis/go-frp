@@ -10,7 +10,7 @@ func TestView(t *testing.T) {
 	v := m.View(Updater(m), nil)
 	want := []string{
 		"<div>", "</div>",
-		`<input value=""></input>`,
+		`<input value=""/>`,
 		"Clear</button>",
 	}
 	got, _ := v.Render()

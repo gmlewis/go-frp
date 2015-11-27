@@ -6,12 +6,12 @@ import (
 )
 
 func TestView(t *testing.T) {
-	m := Model("")
+	m := Model("test string")
 	v := m.View(Updater(m), nil)
 	want := []string{
 		"<div>", "</div>",
-		`<input value=""></input>`,
-		"<label></label>",
+		`<input value="test string" id="0"/>`,
+		"<label>gnirts tset</label>",
 	}
 	got, _ := v.Render()
 	for _, w := range want {

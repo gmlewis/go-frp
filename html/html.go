@@ -3,6 +3,7 @@ package html
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"reflect"
 	"strconv"
@@ -50,14 +51,17 @@ func (s HTML) Render() (string, []func()) {
 	if s.tag != "" {
 		result = "<" + s.tag
 		for _, v := range s.props {
-			result += fmt.Sprintf(" %s=%q", v[0], v[1])
+			result += fmt.Sprintf(" %s=%q", v[0], template.HTMLEscapeString(v[1]))
 		}
 		var styles string
 		for _, v := range s.styles {
-			styles += fmt.Sprintf("%s:%s;", v[0], v[1])
+			styles += fmt.Sprintf("%s:%s;", v[0], template.HTMLEscapeString(v[1]))
 		}
 		if styles != "" {
 			result += fmt.Sprintf(" style=%q", styles)
+		}
+		if s.body == "" && len(s.elems) == 0 {
+			result += "/"
 		}
 		result += ">"
 	}
@@ -67,8 +71,8 @@ func (s HTML) Render() (string, []func()) {
 		initFuncs = append(initFuncs, ifs...)
 	}
 	initFuncs = append(initFuncs, s.initFuncs...)
-	result += s.body
-	if s.tag != "" {
+	result += template.HTMLEscapeString(s.body)
+	if s.tag != "" && !(s.body == "" && len(s.elems) == 0) {
 		result += "</" + s.tag + ">"
 	}
 	return result, initFuncs

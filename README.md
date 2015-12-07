@@ -25,6 +25,8 @@ do all this in Go.
 [elm]: http://elm-lang.org/
 [gopherjs]: https://github.com/gopherjs/gopherjs
 
+This is not an official Google product.
+
 ## Why Go?
 
 There are a number of reasons for using [Go][]:

@@ -1,3 +1,7 @@
+// Copyright 2015 Google Inc. All rights reserved.
+// Use of this source code is governed by the Apache 2.0
+// license that can be found in the LICENSE file.
+
 // Package reverse is an example using go-frp modeled after the example found in
 // the book "Functional Reactive Programming" by Stephen Blackheath and Anthony Jones:
 // http://www.manning.com/books/functional-reactive-programming

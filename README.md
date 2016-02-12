@@ -1,6 +1,7 @@
 # go-frp - Functional Reactive Programming in Go
 
 ## Status
+[![GoDoc](https://godoc.org/github.com/gmlewis/go-frp?status.svg)](https://godoc.org/github.com/gmlewis/go-frp)
 [![Build Status](https://travis-ci.org/gmlewis/go-frp.png)](https://travis-ci.org/gmlewis/go-frp)
 
 ## Overview

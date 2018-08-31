@@ -8,7 +8,7 @@
 package reverse
 
 import (
-	h "github.com/gmlewis/go-frp/html"
+	h "github.com/gmlewis/go-frp/v2/html"
 	"honnef.co/go/js/dom"
 )
 

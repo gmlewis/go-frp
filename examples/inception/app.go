@@ -5,8 +5,8 @@
 package main
 
 import (
-	"github.com/gmlewis/go-frp/examples/inception/counterpairpair"
-	"github.com/gmlewis/go-frp/start"
+	"github.com/gmlewis/go-frp/v2/examples/inception/counterpairpair"
+	"github.com/gmlewis/go-frp/v2/start"
 )
 
 func main() {

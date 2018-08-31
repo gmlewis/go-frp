@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gmlewis/go-frp/examples/inception/counter"
+	"github.com/gmlewis/go-frp/v2/examples/inception/counter"
 )
 
 func TestView(t *testing.T) {

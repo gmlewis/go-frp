@@ -1,13 +1,21 @@
 sudo: false
-
 language: go
-
 go:
-  - 1.4
-  - 1.5
-
+  - "1.11.x"
+  - "1.10.x"
+  - tip
+env:
+  global:
+    - GO111MODULE=on
+matrix:
+  allow_failures:
+    - go: tip
+  fast_finish: true
 install:
-  - go get -v -t ./...
-
+  - # Do not install yet, since we want it to happen inside the script step below.
 script:
-  - go test -v ./...
+  - go get -t -v ./...
+  - diff -u <(echo -n) <(gofmt -d -s .)  # Make sure formatting is correct.
+  - go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code) # Check that go generate ./... produces a zero diff; clean up any changes afterwards.
+  - go tool vet .
+  - go test -v -race ./...

@@ -7,8 +7,8 @@
 package counterpair
 
 import (
-	"github.com/gmlewis/go-frp/examples/inception/counter"
-	h "github.com/gmlewis/go-frp/html"
+	"github.com/gmlewis/go-frp/v2/examples/inception/counter"
+	h "github.com/gmlewis/go-frp/v2/html"
 )
 
 // MODEL

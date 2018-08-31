@@ -9,7 +9,7 @@ package counter
 import (
 	"fmt"
 
-	h "github.com/gmlewis/go-frp/html"
+	h "github.com/gmlewis/go-frp/v2/html"
 )
 
 // MODEL

@@ -5,7 +5,7 @@
 // Package start provides a simple framework for starting a go-frp web app.
 package start
 
-import h "github.com/gmlewis/go-frp/html"
+import h "github.com/gmlewis/go-frp/v2/html"
 
 func Start(view h.Viewer, rootUpdateFunc interface{}) {
 	// log.Printf("Start(view=%#v, rootUpdateFunc=%#v)", view, rootUpdateFunc)

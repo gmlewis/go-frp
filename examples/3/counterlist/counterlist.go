@@ -7,8 +7,8 @@
 package counterlist
 
 import (
-	c "github.com/gmlewis/go-frp/examples/3/counter"
-	h "github.com/gmlewis/go-frp/html"
+	c "github.com/gmlewis/go-frp/v2/examples/3/counter"
+	h "github.com/gmlewis/go-frp/v2/html"
 )
 
 // MODEL

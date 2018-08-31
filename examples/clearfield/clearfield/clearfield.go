@@ -7,7 +7,7 @@
 // http://www.manning.com/books/functional-reactive-programming
 package clearfield
 
-import h "github.com/gmlewis/go-frp/html"
+import h "github.com/gmlewis/go-frp/v2/html"
 
 // MODEL
 

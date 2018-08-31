@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gmlewis/go-frp/examples/inception/counterpair"
+	"github.com/gmlewis/go-frp/v2/examples/inception/counterpair"
 )
 
 func TestView(t *testing.T) {

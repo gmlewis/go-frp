@@ -5,8 +5,8 @@
 package main
 
 import (
-	"github.com/gmlewis/go-frp/examples/reverse/reverse"
-	"github.com/gmlewis/go-frp/start"
+	"github.com/gmlewis/go-frp/v2/examples/reverse/reverse"
+	"github.com/gmlewis/go-frp/v2/start"
 )
 
 func main() {

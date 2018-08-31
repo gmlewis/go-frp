@@ -8,8 +8,8 @@ package counterpairpair
 import (
 	"math/rand"
 
-	"github.com/gmlewis/go-frp/examples/inception/counterpair"
-	h "github.com/gmlewis/go-frp/html"
+	"github.com/gmlewis/go-frp/v2/examples/inception/counterpair"
+	h "github.com/gmlewis/go-frp/v2/html"
 )
 
 const max = 100

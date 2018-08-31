@@ -44,8 +44,8 @@ There are a number of reasons for using [Go][]:
 ## Installation
 
 ```bash
-$ go get -u github.com/gopherjs/gopherjs
-$ go get -u github.com/gmlewis/go-frp
+$ go get github.com/gopherjs/gopherjs
+$ go get github.com/gmlewis/go-frp/v2
 ```
 
 ## Getting started
@@ -53,7 +53,7 @@ $ go get -u github.com/gmlewis/go-frp
 ### Run the examples
 
 ```bash
-$ cd $GOPATH/src/github.com/gmlewis/go-frp/examples/1
+$ cd examples/1
 $ gopherjs build -m app.go
 ```
 

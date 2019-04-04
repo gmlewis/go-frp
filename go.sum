@@ -1,4 +1,9 @@
+github.com/gmlewis/go-frp v1.0.0 h1:Xhjxj6gNV2vFmcaOvtgoFbSGl7XmUQtOtMntgYCJEj8=
 github.com/gopherjs/gopherjs v0.0.0-20180825215210-0210a2f0f73c h1:16eHWuMGvCjSfgRJKqIzapE78onvvTbdi1rMkU00lZw=
 github.com/gopherjs/gopherjs v0.0.0-20180825215210-0210a2f0f73c/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
+github.com/gopherjs/gopherjs v0.0.0-20190328170749-bb2674552d8f h1:4Gslotqbs16iAg+1KR/XdabIfq8TlAWHdwS5QJFksLc=
+github.com/gopherjs/gopherjs v0.0.0-20190328170749-bb2674552d8f/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 honnef.co/go/js/dom v0.0.0-20180323154144-6da835bec70f h1:8wvPTUK0UjW0bwvb0Q2mdhzSf78P6dXQI6mE9v+jJvI=
 honnef.co/go/js/dom v0.0.0-20180323154144-6da835bec70f/go.mod h1:sUMDUKNB2ZcVjt92UnLy3cdGs+wDAcrPdV3JP6sVgA4=
+honnef.co/go/js/dom v0.0.0-20190403051653-d6d651dc5aea h1:l6lyoxaYVdN7ef9QLiRuDMKFTX8a4QtrRg7rf8nmlb0=
+honnef.co/go/js/dom v0.0.0-20190403051653-d6d651dc5aea/go.mod h1:sUMDUKNB2ZcVjt92UnLy3cdGs+wDAcrPdV3JP6sVgA4=
